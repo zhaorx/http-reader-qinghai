@@ -2,3 +2,5 @@ spring:
   main:
     web-application-type: none
 interval: 60000
+data-url: http://localhost:6666/gas/list?ts_start={ts_start}&ts_end={ts_end}
+push-url: http://localhost:6666/gas/batch/add
