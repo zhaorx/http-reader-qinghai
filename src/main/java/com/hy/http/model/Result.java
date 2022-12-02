@@ -3,32 +3,40 @@ package com.hy.http.model;
 import java.util.List;
 
 public class Result {
-    private long num;
-    private String message;
+    public Boolean Status;
+    public Integer Code;
+    public String Message;
+    public List<DataItem> Data;
 
-    private List<Gas> list;
-
-    public List<Gas> getList() {
-        return list;
+    public Boolean getStatus() {
+        return Status;
     }
 
-    public void setList(List<Gas> list) {
-        this.list = list;
+    public void setStatus(Boolean status) {
+        Status = status;
     }
 
-    public long getNum() {
-        return num;
+    public Integer getCode() {
+        return Code;
     }
 
-    public void setNum(long num) {
-        this.num = num;
+    public void setCode(Integer code) {
+        Code = code;
     }
 
     public String getMessage() {
-        return message;
+        return Message;
     }
 
     public void setMessage(String message) {
-        this.message = message;
+        Message = message;
+    }
+
+    public List<DataItem> getData() {
+        return Data;
+    }
+
+    public void setData(List<DataItem> data) {
+        Data = data;
     }
 }

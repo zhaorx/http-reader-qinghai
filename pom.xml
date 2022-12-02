@@ -9,8 +9,8 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.hy</groupId>
-    <artifactId>http-reader</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <artifactId>http-reader-qinghai</artifactId>
+    <version>0.1</version>
     <name>http-reader</name>
     <description>http-reader</description>
     <properties>

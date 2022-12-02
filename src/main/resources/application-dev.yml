@@ -2,5 +2,9 @@ spring:
   main:
     web-application-type: none
 interval: 60000
-data-url: http://localhost:6666/gas/list?ts_start={ts_start}&ts_end={ts_end}
-push-url: http://localhost:6666/gas/batch/add
+data-url: http://10.82.249.208:9043/api/Business/Group/GetTransGasLineOperatingParameter?lineCode=10001
+#data-url: http://127.0.0.1:6666/qh/data
+token: aff39473dfef1f5bdcbe90a52f2a8e45
+push-url: http://localhost:6666/gas/add
+region: qinghai
+unit-map: '{"YL":"MPa","LL":"Nm3/h"}'
