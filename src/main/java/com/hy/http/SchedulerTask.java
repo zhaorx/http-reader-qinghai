@@ -50,7 +50,7 @@ public class SchedulerTask {
                 Param p = item.getParameters().get(j);
 
                 g.setPoint(region + sep + item.getLineCode() + sep + p.getParaCode());
-                g.setPname(region + "_" + item.getLineName() + sep + p.getParaName());
+                g.setPname(region + sep + item.getLineName() + sep + p.getParaName());
                 g.setValue(p.getParaValue());
                 g.setUnit(unitMap.get(p.getParaCode()));
 
