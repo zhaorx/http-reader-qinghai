@@ -5,5 +5,6 @@ interval: 60000
 data-url: http://10.82.249.208:9043/api/Business/Group/GetTransGasLineOperatingParameter?lineCode=10001
 token: aff39473dfef1f5bdcbe90a52f2a8e45
 push-url: http://localhost:6666/gas/add
+push-multi-url: http://localhost:6666/gas/multi/add
 region: qinghai
 unit-map: '{"YL":"MPa","LL":"Nm3/h"}'

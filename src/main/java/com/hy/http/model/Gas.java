@@ -1,20 +1,18 @@
 package com.hy.http.model;
 
-import java.util.Date;
-
 public class Gas {
-    private Date ts;
+    private String ts;
     private String point ;
     private String pname ;
     private String unit ;
     private String region ;
     private double value ;
 
-    public Date getTs() {
+    public String getTs() {
         return ts;
     }
 
-    public void setTs(Date ts) {
+    public void setTs(String ts) {
         this.ts = ts;
     }
 

@@ -11,15 +11,15 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Component
 public class SchedulerTask {
     private static final Logger logger = LoggerFactory.getLogger(SchedulerTask.class);
     @Value("${push-url}")
     private String pushUrl;
+    @Value("${push-multi-url}")
+    private String pushMultiUrl;
     @Value("${data-url}")
     private String dataUrl;
     @Value("${token}")
@@ -30,19 +30,22 @@ public class SchedulerTask {
     private Map<String, String> unitMap;
     private String sep = "_";
 
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
     @Scheduled(fixedDelayString = "${interval}")
     public void transferSchedule() {
         logger.info("starting transfer...");
         Result r = this.getRecentData();
 
         Gas g = new Gas();
-        g.setTs(new Date());
+        g.setTs(sdf.format(new Date()));
         g.setRegion(region);
 
         if (r.getData() == null || !r.getStatus()) {
             return;
         }
 
+        List<Gas> list = new ArrayList<>();
         for (int i = 0; i < r.getData().size(); i++) {
             DataItem item = r.getData().get(i);
 
@@ -53,11 +56,12 @@ public class SchedulerTask {
                 g.setPname(region + sep + item.getLineName() + sep + p.getParaName());
                 g.setValue(p.getParaValue());
                 g.setUnit(unitMap.get(p.getParaCode()));
-
-                WritterResult result = this.addTaos(g);
-                logger.info(result.getMessage());
+                g.setRegion(region);
+                list.add(g);
             }
         }
+        WritterResult result = this.addMultiTaos(list);
+        logger.info(result.getMessage());
     }
 
     public Result getRecentData() {
@@ -72,12 +76,24 @@ public class SchedulerTask {
         return rentity.getBody();
     }
 
+    public WritterResult addMultiTaos(List<Gas> list) {
+        HttpHeaders requestHeaders = new HttpHeaders();
+        requestHeaders.setContentType(MediaType.APPLICATION_JSON);
+        RestTemplate restTemplate = new RestTemplate();
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("gasList", list);
+
+        HttpEntity<Map<String, Object>> r = new HttpEntity<>(requestBody, requestHeaders);
+        WritterResult result = restTemplate.postForObject(pushMultiUrl, r, WritterResult.class);
+
+        return result;
+    }
+
     private WritterResult addTaos(Gas data) {
         HttpHeaders requestHeaders = new HttpHeaders();
         requestHeaders.setContentType(MediaType.APPLICATION_JSON);
         RestTemplate restTemplate = new RestTemplate();
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String dateString = sdf.format(data.getTs());
 
         Map<String, Object> requestBody = new HashMap<>();
