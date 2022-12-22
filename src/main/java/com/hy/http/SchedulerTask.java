@@ -37,14 +37,13 @@ public class SchedulerTask {
         logger.info("starting transfer...");
         Result r = this.getRecentData();
 
-        Gas g = new Gas();
-        g.setTs(sdf.format(new Date()));
-        g.setRegion(region);
+
 
         if (r.getData() == null || !r.getStatus()) {
             return;
         }
 
+        String dateStr = sdf.format(new Date());
         List<Gas> list = new ArrayList<>();
         for (int i = 0; i < r.getData().size(); i++) {
             DataItem item = r.getData().get(i);
@@ -52,11 +51,15 @@ public class SchedulerTask {
             for (int j = 0; j < item.getParameters().size(); j++) {
                 Param p = item.getParameters().get(j);
 
+                Gas g = new Gas();
+                g.setTs(dateStr);
+                g.setRegion(region);
                 g.setPoint(region + sep + item.getLineCode() + sep + p.getParaCode());
                 g.setPname(region + sep + item.getLineName() + sep + p.getParaName());
                 g.setValue(p.getParaValue());
                 g.setUnit(unitMap.get(p.getParaCode()));
                 g.setRegion(region);
+                logger.debug("######point_data:" + g.toString());
                 list.add(g);
             }
         }
